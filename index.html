@@ -7,7 +7,6 @@
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
     <link rel="manifest" href="manifest.webmanifest">
-  <script src="TemplateData/profiler.js"></script>
   </head>
   <body>
     <div id="unity-container">
@@ -25,7 +24,12 @@
       <div id="unity-warning"> </div>
     </div>
     <script>
-      window.addEventListener("load", function () {});
+      window.addEventListener("load", function () {
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.register("ServiceWorker.js");
+        }
+      });
+
       var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
       var loadingContainer = document.querySelector("#unity-loading-container");
@@ -110,11 +114,6 @@
             loadingContainer.style.display = "none";
           }
         }).then((unityInstance) => {
-          var profile = unityProfiler.createButton(unityInstance);
-          profile.style.position = 'fixed';
-          profile.style.bottom = '5px';
-          profile.style.left = '5px';
-          document.body.appendChild(profile);
         }).catch((message) => {
           alert(message);
         });
